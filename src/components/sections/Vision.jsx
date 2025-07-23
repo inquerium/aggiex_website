@@ -1,50 +1,79 @@
-import { Lightbulb, Globe, Users } from "lucide-react";
+import { Target, ChevronDown } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 export default function Vision() {
-  return (
-    <section id="vision" className="w-full py-16 bg-white">
-      <div className="container px-4 md:px-6 mx-auto">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-maroon-100 px-3 py-1 text-sm text-maroon-900 font-semibold">Our Vision</div>
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Building the Future of Entrepreneurship</h2>
-            <p className="max-w-[900px] text-gray-600 md:text-xl mx-auto">
-              AggieX aims to create a globally recognized entrepreneurial ecosystem at Texas A&M University that fosters innovation, provides resources, and connects students, faculty, and alumni with industry partners to build successful ventures.
-            </p>
-          </div>
-        </div>
-        <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
-          <VisionCard
-            icon={<Lightbulb className="h-10 w-10 text-maroon-600 mb-2" />}
-            title="Innovation Hub"
-            desc="A physical and virtual space where ideas transform into viable businesses"
-            content="State-of-the-art facilities designed to foster collaboration, experimentation, and growth for startups at every stage."
-          />
-          <VisionCard
-            icon={<Globe className="h-10 w-10 text-maroon-600 mb-2" />}
-            title="Global Network"
-            desc="Connecting Aggies to worldwide opportunities and resources"
-            content="Strategic partnerships with international accelerators, investors, and industry leaders to provide global reach for Aggie startups."
-          />
-          <VisionCard
-            icon={<Users className="h-10 w-10 text-maroon-600 mb-2" />}
-            title="Community Driven"
-            desc="Powered by the strength of the Aggie network"
-            content="Leveraging the vast Aggie alumni network to provide mentorship, funding, and industry connections for emerging entrepreneurs."
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-function VisionCard({ icon, title, desc, content }) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center text-center border hover:shadow-lg transition">
-      {icon}
-      <h3 className="text-xl font-bold mt-2 mb-1">{title}</h3>
-      <p className="text-maroon-700 font-medium mb-2">{desc}</p>
-      <p className="text-gray-600 text-sm">{content}</p>
-    </div>
+    <section id="vision" className="w-full py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-maroon-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-blue-400 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-green-400 rounded-full blur-2xl" />
+      </div>
+
+      <motion.div
+        ref={containerRef}
+        variants={containerVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="container px-4 md:px-6 mx-auto relative z-10"
+      >
+        {/* Hero Statement */}
+        <motion.div variants={itemVariants} className="text-center mb-12">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            className="inline-flex items-center gap-2 rounded-full bg-maroon-100 px-6 py-3 text-sm text-maroon-900 font-helvetica font-semibold mb-6"
+          >
+            <Target className="h-4 w-4" />
+            Our Vision
+          </motion.div>
+          <h2 className="text-4xl font-helvetica font-extrabold tracking-tight sm:text-6xl text-gray-900 mb-6">
+            The <span className="text-maroon-700">Revolution</span> Aggieland<br />
+            <span className="text-2xl sm:text-3xl text-maroon-600 font-helvetica">Has Been Waiting For</span>
+          </h2>
+          <p className="max-w-[900px] text-gray-600 md:text-xl mx-auto leading-relaxed mb-8 font-helvetica">
+            While other universities build billion-dollar startups, Texas A&M's potential sits untapped. <span className="text-maroon-700 font-semibold">AggieX is changing that.</span> This is your chance to be part of something that will define the future of Aggie innovation.
+          </p>
+
+          {/* Bouncing Arrow */}
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex justify-center"
+          >
+            <ChevronDown className="h-8 w-8 text-maroon-600" />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Section Transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
+    </section>
   );
 } 

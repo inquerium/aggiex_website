@@ -1,8 +1,12 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/sections/Hero";
 import Vision from "../components/sections/Vision";
+import Problem from "../components/sections/Problem";
+import Opportunity from "../components/sections/Opportunity";
+import Ecosystem from "../components/sections/Ecosystem";
 import Programs from "../components/sections/Programs";
-import Team from "../components/sections/Team";
+import Podcast from "../components/sections/Podcast";
+import Community from "../components/sections/Community";
 import Footer from "../components/Footer";
 
 export default function Home() {
@@ -12,8 +16,12 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <Vision />
+        <Problem />
+        <Opportunity />
+        <Ecosystem />
         <Programs />
-        <Team />
+        <Podcast />
+        <Community />
       </main>
       <Footer />
     </div>

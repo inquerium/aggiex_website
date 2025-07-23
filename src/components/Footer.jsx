@@ -2,124 +2,153 @@
 
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Twitter, Linkedin, Facebook, Instagram, Mail } from "lucide-react"
+import { Linkedin, Instagram, Mail, MapPin, ArrowRight } from "lucide-react"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
+  const footerSections = [
+    {
+      title: "Programs",
+      links: [
+        { name: "Incubate", href: "/#programs" },
+        { name: "Connect", href: "/#programs" },
+        { name: "Accelerate", href: "/#programs" },
+        { name: "Return", href: "/#programs" },
+      ]
+    },
+    {
+      title: "Resources",
+      links: [
+        { name: "Podcast", href: "/#podcast" },
+        { name: "Ecosystem", href: "/#ecosystem" },
+        { name: "Partners", href: "/#partners" },
+        { name: "Contact", href: "/#contact" },
+      ]
+    },
+    {
+      title: "Community",
+      links: [
+        { name: "Vision", href: "/#vision" },
+        { name: "Join Us", href: "/#get-involved" },
+        { name: "Alumni", href: "/#community" },
+        { name: "Partners", href: "/#partners" },
+      ]
+    }
+  ]
+
   return (
-    <footer className="w-full border-t bg-background">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              {/*<img src="/placeholder.svg?height=32&width=32" alt="Inquerium Logo" className="h-8 w-8 rounded" />*/}
-              <span className="text-xl font-bold">Inquerium</span>
+    <footer className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 border-t border-gray-200">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Brand Section */}
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative">
+                <div className="w-14 h-14 bg-gradient-to-br from-maroon-700 to-maroon-800 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white font-helvetica font-black text-3xl tracking-tight">A</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-maroon-300 rounded-full opacity-80"></div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-3xl font-helvetica font-black tracking-tight text-maroon-800">AggieX</span>
+                <span className="text-sm font-helvetica font-medium text-gray-500 uppercase tracking-wider">Innovation Engine</span>
+              </div>
             </div>
-            <p className="text-muted-foreground">
-              Transforming lead generation through innovative strategies and top talent.
+            
+            <p className="text-gray-600 font-helvetica leading-relaxed mb-8 max-w-md">
+              Building the next generation of Aggie entrepreneurs through unified innovation infrastructure. 
+              Connecting Texas A&M's research, talent, and alumni network into a world-class startup engine.
             </p>
-            <div className="flex space-x-4">
-                {/*<Twitter size={20} />
-                <span className="sr-only">Twitter</span>
-              </motion.a>
+
+            {/* Contact Info */}
+            <div className="space-y-3 mb-8">
+              <div className="flex items-center gap-3 text-gray-600 font-helvetica">
+                <MapPin className="h-4 w-4 text-maroon-600" />
+                <span>College Station, Texas</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-600 font-helvetica">
+                <Mail className="h-4 w-4 text-maroon-600" />
+                <a href="mailto:team@aggiex.org" className="hover:text-maroon-700 transition-colors">
+                  team@aggiex.org
+                </a>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex gap-4">
               <motion.a
-                href="#"
-                whileHover={{ y: -3 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >*/}
-              <motion.a
-                href="https://www.linkedin.com/feed/"
-                whileHover={{ y: -3 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                href="https://www.linkedin.com/company/aggiex"
+                whileHover={{ y: -3, scale: 1.1 }}
+                className="w-10 h-10 bg-maroon-100 hover:bg-maroon-200 rounded-lg flex items-center justify-center text-maroon-700 hover:text-maroon-800 transition-all duration-300"
               >
-                <Linkedin size={20} />
+                <Linkedin size={18} />
                 <span className="sr-only">LinkedIn</span>
               </motion.a>
-                {/*<Facebook size={20} />
-                <span className="sr-only">Facebook</span>
-              </motion.a>
               <motion.a
-                href="#"
-                whileHover={{ y: -3 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >*/}
-              <motion.a
-                href="https://www.instagram.com/inquerium/"
-                whileHover={{ y: -3 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                href="https://www.instagram.com/aggiex"
+                whileHover={{ y: -3, scale: 1.1 }}
+                className="w-10 h-10 bg-maroon-100 hover:bg-maroon-200 rounded-lg flex items-center justify-center text-maroon-700 hover:text-maroon-800 transition-all duration-300"
               >
-                <Instagram size={20} />
+                <Instagram size={18} />
                 <span className="sr-only">Instagram</span>
               </motion.a>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              {["Services", "About", "Team", "Testimonials", "Contact", "Blog", "Careers"].map((item) => (
-                <li key={item}>
-                  <Link
-                    to={item === "Blog" ? "/blog" : item === "Careers" ? "/careers" : `/#${item.toLowerCase()}`}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
+          {/* Links Sections */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {footerSections.map((section) => (
+                <div key={section.title}>
+                  <h3 className="font-helvetica font-bold text-lg text-gray-900 mb-6">{section.title}</h3>
+                  <ul className="space-y-3">
+                    {section.links.map((link) => (
+                      <li key={link.name}>
+                        <Link
+                          to={link.href}
+                          className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica group flex items-center gap-2"
+                        >
+                          <span>{link.name}</span>
+                          <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Services</h3>
-            <ul className="space-y-2">
-              {[
-                "Digital Marketing",
-                "Content Strategy",
-                "Lead Qualification",
-                "Market Research",
-                "CRM Integration",
-              ].map((item) => (
-                <li key={item}>
-                  <Link to={`/#services`} className="text-muted-foreground hover:text-primary transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Contact Us</h3>
-            <address className="not-italic space-y-2 text-muted-foreground">
-              <p>College Station, TX</p>
-              <p className="flex items-center gap-2">
-                <Mail size={16} />
-                <a href="mailto:team@inquerium.com" className="hover:text-primary transition-colors">
-                  team@inquerium.com
-                </a>
-              </p>
-              <h3 className="font-bold text-lg">Phone</h3>
-                    <a href="tel:+12146744198" className="text-muted-foreground hover:text-primary transition-colors">
-                      (214) 674-4198
-                    </a>
-            </address>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">&copy; {currentYear} Inquerium. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
-            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <a href="https://instagram.com/inquerium" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Instagram
-            </a>
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-200 bg-white">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-6 text-sm text-gray-500 font-helvetica">
+              <span>&copy; {currentYear} AggieX. All rights reserved.</span>
+              <span className="hidden md:inline">•</span>
+              <span className="hidden md:inline">Built by Aggies, for Aggies</span>
+            </div>
+            
+            <div className="flex gap-6 text-sm">
+              <Link to="/terms" className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica">
+                Terms of Service
+              </Link>
+              <Link to="/privacy" className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica">
+                Privacy Policy
+              </Link>
+              <a 
+                href="https://instagram.com/aggiex" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica"
+              >
+                Instagram
+              </a>
+            </div>
           </div>
         </div>
       </div>

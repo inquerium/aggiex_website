@@ -3,36 +3,38 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Linkedin, Instagram, Mail, MapPin, ArrowRight } from "lucide-react"
+import logo from "../assets/aggieX_logo-transparent.png"
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   const footerSections = [
     {
-      title: "Programs",
+      title: "About",
       links: [
-        { name: "Incubate", href: "/#programs" },
-        { name: "Connect", href: "/#programs" },
-        { name: "Accelerate", href: "/#programs" },
-        { name: "Return", href: "/#programs" },
-      ]
-    },
-    {
-      title: "Resources",
-      links: [
-        { name: "Podcast", href: "/#podcast" },
-        { name: "Ecosystem", href: "/#ecosystem" },
-        { name: "Partners", href: "/#partners" },
-        { name: "Contact", href: "/#contact" },
+        { name: "Vision", href: "/#vision" },
+        { name: "Problem", href: "/#problem" },
+        { name: "Opportunity", href: "/#opportunity" },
+        { name: "Process", href: "/#process" },
       ]
     },
     {
       title: "Community",
       links: [
-        { name: "Vision", href: "/#vision" },
-        { name: "Join Us", href: "/#get-involved" },
-        { name: "Alumni", href: "/#community" },
-        { name: "Partners", href: "/#partners" },
+        { name: "Community Leaders", href: "/#community" },
+        { name: "Advisory Board", href: "/#community" },
+        { name: "Alumni Mentors", href: "/#community" },
+        { name: "Podcast", href: "/#podcast" },
+      ]
+    },
+    {
+      title: "Get Involved",
+      links: [
+        { name: "Apply", href: "/apply" },
+        { name: "Contact", href: "mailto:team@aggiex.org" },
+        { name: "LinkedIn", href: "https://www.linkedin.com/company/aggiex" },
+        { name: "Instagram", href: "https://www.instagram.com/_aggiex_" },
       ]
     }
   ]
@@ -45,21 +47,20 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-4 mb-6">
-              <div className="relative">
-                <div className="w-14 h-14 bg-gradient-to-br from-maroon-700 to-maroon-800 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-white font-helvetica font-black text-3xl tracking-tight">A</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-maroon-300 rounded-full opacity-80"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-helvetica font-black tracking-tight text-maroon-800">AggieX</span>
-                <span className="text-sm font-helvetica font-medium text-gray-500 uppercase tracking-wider">Innovation Engine</span>
-              </div>
+            <Link to="/" className="flex items-center gap-4 group">
+            <div className="relative">
+              <img 
+                src={logo} 
+                alt="AggieX Logo" 
+                className="w-20 h-20 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          </Link>
             </div>
             
             <p className="text-gray-600 font-helvetica leading-relaxed mb-8 max-w-md">
-              Building the next generation of Aggie entrepreneurs through unified innovation infrastructure. 
-              Connecting Texas A&M's research, talent, and alumni network into a world-class startup engine.
+              Texas A&M's first university-sponsored startup accelerator. 
+              Building the next generation of Aggie entrepreneurs through mentorship, funding, and community.
             </p>
 
             {/* Contact Info */}
@@ -106,13 +107,23 @@ export default function Footer() {
                   <ul className="space-y-3">
                     {section.links.map((link) => (
                       <li key={link.name}>
-                        <Link
-                          to={link.href}
-                          className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica group flex items-center gap-2"
-                        >
-                          <span>{link.name}</span>
-                          <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </Link>
+                        {link.href.startsWith('http') || link.href.startsWith('mailto') ? (
+                          <a
+                            href={link.href}
+                            className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica group flex items-center gap-2"
+                          >
+                            <span>{link.name}</span>
+                            <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </a>
+                        ) : (
+                          <Link
+                            to={link.href}
+                            className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica group flex items-center gap-2"
+                          >
+                            <span>{link.name}</span>
+                            <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -123,35 +134,24 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-200 bg-white">
-        <div className="container mx-auto px-6 py-6">
+      {/* Bottom Footer */}
+      <div className="border-t border-gray-200">
+        <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-6 text-sm text-gray-500 font-helvetica">
-              <span>&copy; {currentYear} AggieX. All rights reserved.</span>
-              <span className="hidden md:inline">•</span>
-              <span className="hidden md:inline">Built by Aggies, for Aggies</span>
+            <div className="text-gray-600 font-helvetica text-sm">
+              © {currentYear} AggieX. All rights reserved.
             </div>
-            
             <div className="flex gap-6 text-sm">
-              <Link to="/terms" className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica">
+              <Link to="/terms" className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica">
                 Terms of Service
               </Link>
-              <Link to="/privacy" className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica">
+              <Link to="/privacy" className="text-gray-600 hover:text-maroon-700 transition-colors font-helvetica">
                 Privacy Policy
               </Link>
-              <a 
-                href="https://instagram.com/aggiex" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-gray-500 hover:text-maroon-700 transition-colors font-helvetica"
-              >
-                Instagram
-              </a>
             </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

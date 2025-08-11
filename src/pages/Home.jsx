@@ -2,11 +2,10 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/sections/Hero";
 import Vision from "../components/sections/Vision";
 import Problem from "../components/sections/Problem";
-import Opportunity from "../components/sections/Opportunity";
-import Ecosystem from "../components/sections/Ecosystem";
-import Programs from "../components/sections/Programs";
-import Podcast from "../components/sections/Podcast";
 import Community from "../components/sections/Community";
+import Opportunity from "../components/sections/Opportunity";
+import Podcast from "../components/sections/Podcast";
+import Process from "../components/sections/Process";
 import Footer from "../components/Footer";
 
 export default function Home() {
@@ -15,15 +14,13 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <Opportunity />
         <Vision />
         <Problem />
-        <Opportunity />
-        <Ecosystem />
-        <Programs />
+        <Process />
         <Podcast />
-        <Community />
-      </main>
+        <Community />      </main>
       <Footer />
     </div>
   );
-}
+} 

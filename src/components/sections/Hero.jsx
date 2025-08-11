@@ -2,74 +2,98 @@
 
 import { motion } from "framer-motion";
 import { TypeAnimation } from 'react-type-animation';
+import { Link } from "react-router-dom";
 import AggieLandImg from "../../assets/aggieland.jpeg";
 
 export default function Hero() {
   return (
-    <section className="relative w-full py-16 md:py-28 bg-gradient-to-b from-maroon-900 to-maroon-800 overflow-hidden">
-      {/* Background pattern for texture */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-black rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-maroon-300 rounded-full blur-2xl" />
+    <section className="relative w-full py-16 md:py-24 bg-white overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-maroon-200 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-200 rounded-full blur-2xl" />
       </div>
       
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[60vh] relative z-10">
+      <div className="container mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[70vh] relative z-10">
         {/* Left: Text */}
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          className="flex flex-col gap-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col space-y-8"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-helvetica font-extrabold tracking-tight leading-tight text-white mb-4">
-            The Next <span className="text-maroon-200">Billion-Dollar</span> Startup<br />
-            Will Be Built{" "}
-            <span className="inline-block">
-              <TypeAnimation
-                sequence={[
-                  'Right',
-                  1000,
-                  'Right Here.',
-                  10000,
-                  '',
-                  1000,
-                ]}
-                wrapper="span"
-                speed={50}
-                repeat={Infinity}
-                deletionSpeed={50}
-                cursor={true}
-                className="animate-glow font-helvetica"
-                style={{color: '#D1D1D1'}}
-              />
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-100 max-w-xl mb-6 font-helvetica leading-relaxed">
-            <span className="text-maroon-200 font-bold">AggieX</span> is the missing piece. We're building the infrastructure that connects Texas A&M's <span className="text-maroon-200 font-semibold">#1 engineering research budget</span>, <span className="text-maroon-200 font-semibold">largest undergrad population</span>, and <span className="text-maroon-200 font-semibold">massive alumni network</span> into a startup engine that rivals Stanford and MIT.
-          </p>
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="inline-flex items-center gap-2 bg-maroon-50 text-maroon-700 px-4 py-2 rounded-full text-sm font-medium border border-maroon-100 w-fit"
+          >
+            <div className="w-2 h-2 bg-maroon-500 rounded-full"></div>
+            Texas A&M's Premier Accelerator
+          </motion.div>
+
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+              The Next <span className="text-maroon-600">Billion-Dollar</span> Startup<br />
+              Will Be Built{" "}
+              <span className="inline-block">
+                <TypeAnimation
+                  sequence={[
+                    'Right',
+                    1000,
+                    'Right Here.',
+                    10000,
+                    '',
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                  deletionSpeed={50}
+                  cursor={true}
+                  className="text-maroon-600"
+                />
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl leading-relaxed">
+              <span className="text-maroon-600 font-semibold">AggieX</span> is A&M's first university-sponsored, non-profit, accelerator. With the <span className="text-maroon-600 font-semibold">#1 engineering research budget</span>, <span className="text-maroon-600 font-semibold">largest undergrad population</span>, and <span className="text-maroon-600 font-semibold">massive alumni network</span>, AggieX is making Texas A&M into a startup engine.
+            </p>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="#vision" className="bg-white text-maroon-800 font-helvetica font-bold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition text-lg">Learn About Vision</a>
-            <a href="#get-involved" className="border-2 border-white text-white font-helvetica font-bold px-8 py-3 rounded-lg hover:bg-white hover:text-maroon-800 bg-transparent transition text-lg">Join Us</a>
+            <a 
+              href="#vision" 
+              className="inline-flex items-center justify-center bg-maroon-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-maroon-700 transition-colors duration-200 text-lg shadow-sm hover:shadow-md"
+            >
+              Learn About Vision
+            </a>
+            <Link 
+              to="/apply"
+              className="inline-flex items-center justify-center border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-maroon-600 hover:text-maroon-600 bg-white transition-colors duration-200 text-lg"
+            >
+              Apply
+            </Link>
           </div>
         </motion.div>
+
         {/* Right: Image */}
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="flex items-center justify-center"
         >
-          <div className="relative w-full max-w-md h-[340px] md:h-[420px] rounded-2xl overflow-hidden shadow-2xl border-4 border-maroon-200 transform hover:scale-105 transition-transform duration-300">
+          <div className="relative w-full max-w-lg h-[400px] md:h-[480px] rounded-2xl overflow-hidden shadow-xl border border-gray-200">
             <img
               src={AggieLandImg}
               alt="Aggieland campus"
               className="object-cover w-full h-full"
-              style={{ filter: 'brightness(0.95) contrast(1.1)' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-maroon-900/40 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
-                <p className="text-maroon-800 font-helvetica font-bold text-sm">WELCOME TO AGGIELAND</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 text-center shadow-lg border border-gray-100">
+                <p className="text-gray-900 font-semibold text-sm">WELCOME TO AGGIELAND</p>
               </div>
             </div>
           </div>

@@ -1,11 +1,11 @@
 import type React from "react"
-import "@/app/globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import "../app/globals.css"
+import { ThemeProvider } from "../components/theme-provider"
 
 export const metadata = {
-  title: "Inquerium - College Station's Premier Lead Generation Company",
+  title: "AggieX - A&M's Startup Accelerator",
   description:
-    "Inquerium connects businesses with their ideal customers through innovative lead generation strategies powered by top talent from College Station.",
+    "AggieX is Texas A&M's startup accelerator. We help students and alumni build their startups and connect with the resources they need to succeed.",
 }
 
 export default function RootLayout({

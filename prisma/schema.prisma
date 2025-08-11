@@ -4,7 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// Prisma schema for Inquerium Website
+// Prisma schema for AggieX Accelerator Website
 // Run `npx prisma migrate dev --name init` after editing
 
 generator client {
@@ -16,46 +16,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model BlogPost {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String   @db.Text
-  author    String
-  excerpt   String?
-  tags      String?
-  status    String   @default("published") // published, draft
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Application {
+  id          Int      @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  email       String
+  affiliation String   // current-student, alumni, faculty, researcher, partner, other
+  role        String   // founder, student-builder, alumni-mentor, advisor, investor, partner, other
+  message     String?  @db.Text // optional additional information
+  status      String   @default("pending") // pending, approved, rejected, waitlisted
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@map("blog_posts")
-}
-
-model UserInteraction {
-  id        Int      @id @default(autoincrement())
-  type      String   // e.g. 'visit', 'click', 'form_submit'
-  page      String   // e.g. '/blog', '/careers', etc.
-  details   String?  // JSON string for extra info
-  createdAt DateTime @default(now())
-}
-
-model Message {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  company   String?
-  phone     String?
-  isStudent Boolean
-  major     String?
-  graduationYear String?
-  position  String?
-  message   String
-  type      String   // 'contact' or 'careers'
-  createdAt DateTime @default(now())
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String   // hashed password
-  createdAt DateTime @default(now())
+  @@map("applications")
 }

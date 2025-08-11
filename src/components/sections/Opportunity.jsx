@@ -1,6 +1,7 @@
 import { Users, TrendingUp, Target, ArrowRight, Star } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 export default function Opportunity() {
   const containerRef = useRef(null);
@@ -27,29 +28,37 @@ export default function Opportunity() {
   };
 
   return (
-    <section id="opportunity" className="w-full py-20 bg-gradient-to-b from-white to-gray-50 relative">
-      {/* Section Transition */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent"></div>
-      
+    <section id="opportunity" className="w-full py-16 md:py-20 bg-white relative">
       <motion.div 
         ref={containerRef}
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        className="container px-4 md:px-6 mx-auto relative z-10"
+        className="container mx-auto px-6 md:px-8 relative z-10"
       >
         {/* Choose Your Role Section */}
-        <motion.div variants={itemVariants} className="mb-16">
-          <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-6 py-3 text-sm text-blue-800 font-semibold mb-8 mx-auto block text-center"
-          >
-            <Users className="h-4 w-4" />
-            Your Chance to Shape the Future
-          </motion.div>
-          <h3 className="text-4xl font-bold text-center text-gray-900 mb-16">Choose Your Role in the Revolution</h3>
+        <motion.div variants={itemVariants} className="max-w-6xl mx-auto">
+          <div className="text-center space-y-8 mb-16">
+            {/* Badge */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+              className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium border border-blue-200"
+            >
+              <Users className="h-4 w-4" />
+              Your Chance to Shape the Future
+            </motion.div>
+            
+            <div className="space-y-6">
+              <h3 className="text-4xl md:text-5xl font-bold text-gray-900">Choose Your Role in the Revolution</h3>
+            </div>
+            <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                AggieX represents a unique opportunity to be part of Texas A&M's transformation into a startup powerhouse. 
+                <span className="text-maroon-600 font-semibold">Our non-profit model creates a win-win: founders retain full ownership while investors benefit from tax-advantaged opportunities.</span>
+              </p>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8">
             {[
               {
@@ -67,27 +76,29 @@ export default function Opportunity() {
               },
               {
                 title: "Alumni",
-                subtitle: "Invest in the Future You Built",
-                description: "You helped build Texas A&M. Now help build the next generation of Aggie entrepreneurs and secure your legacy.",
+                subtitle: "Build Companies or Invest",
+                description: "You helped build Texas A&M. Now help build the next generation of Aggie entrepreneurs through direct involvement or investment.",
                 benefits: [
-                  "First access to breakthrough innovations",
-                  "Mentor the next generation of Aggies",
-                  "Build wealth while building legacy"
+                  "Build companies alongside current students as co-founders",
+                  "Invest in promising Aggie startups with tax advantages",
+                  "Mentor the next generation of Aggie entrepreneurs",
+                  "First access to breakthrough innovations from campus"
                 ],
-                cta: "Invest in Aggies",
+                cta: "Get Involved",
                 color: "maroon",
                 icon: Star
               },
               {
-                title: "Advisors & Partners",
-                subtitle: "Join the Innovation Engine",
-                description: "Be part of the team that transforms Texas A&M into the premier startup ecosystem in the South.",
+                title: "Advisors & Mentors",
+                subtitle: "Share Your Expertise",
+                description: "Leverage your experience to guide the next generation of Aggie entrepreneurs and shape the future of innovation.",
                 benefits: [
-                  "Shape the future of university innovation",
+                  "Mentor promising student entrepreneurs",
+                  "Provide strategic advice to growing startups",
                   "Access to cutting-edge research commercialization",
-                  "Build lasting partnerships with AggieX"
+                  "Build lasting relationships with future industry leaders"
                 ],
-                cta: "Partner With Us",
+                cta: "Become a Mentor",
                 color: "green",
                 icon: Target
               }
@@ -105,18 +116,15 @@ export default function Opportunity() {
           </div>
         </motion.div>
       </motion.div>
-      
-      {/* Section Transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
     </section>
   );
 }
 
 function AudienceCard({ title, subtitle, description, benefits, cta, color, icon: Icon }) {
   const colorClasses = {
-    blue: "border-blue-200 hover:border-blue-300 bg-gradient-to-br from-blue-50 to-blue-100",
-    maroon: "border-maroon-200 hover:border-maroon-300 bg-gradient-to-br from-maroon-50 to-maroon-100", 
-    green: "border-green-200 hover:border-green-300 bg-gradient-to-br from-green-50 to-green-100"
+    blue: "border-blue-200 hover:border-blue-300",
+    maroon: "border-maroon-200 hover:border-maroon-300", 
+    green: "border-green-200 hover:border-green-300"
   };
 
   const textColors = {
@@ -126,53 +134,56 @@ function AudienceCard({ title, subtitle, description, benefits, cta, color, icon
   };
 
   const bgColors = {
+    blue: "bg-blue-50",
+    maroon: "bg-maroon-50",
+    green: "bg-green-50"
+  };
+
+  const buttonColors = {
     blue: "bg-blue-600 hover:bg-blue-700",
-    maroon: "bg-maroon-600 hover:bg-maroon-700", 
+    maroon: "bg-maroon-600 hover:bg-maroon-700",
     green: "bg-green-600 hover:bg-green-700"
   };
 
   return (
-    <motion.div 
-      whileHover={{ y: -10, scale: 1.02 }}
-      className={`bg-white rounded-xl shadow-lg p-8 border-2 ${colorClasses[color]} transition-all duration-300 hover:shadow-xl`}
-    >
-      <div className="text-center mb-6">
-        <div className="flex justify-center mb-4">
-          <div className={`p-3 rounded-full ${bgColors[color]} text-white`}>
-            <Icon className="h-6 w-6" />
-          </div>
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">{title}</h3>
-        <p className={`text-lg font-semibold ${textColors[color]} mb-3`}>{subtitle}</p>
-        <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
-      </div>
-      
-      <div className="mb-6">
-        <h4 className="font-semibold text-gray-900 mb-3">What You Get:</h4>
-        <ul className="space-y-2">
-          {benefits.map((benefit, index) => (
-            <motion.li 
-              key={index} 
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-2 text-sm text-gray-700"
-            >
-              <ArrowRight className={`h-4 w-4 mt-0.5 ${textColors[color]} flex-shrink-0`} />
-              <span>{benefit}</span>
-            </motion.li>
-          ))}
-        </ul>
+    <div className={`p-8 bg-white rounded-xl border border-gray-200 ${colorClasses[color]} hover:shadow-md transition-all duration-300 h-full flex flex-col`}>
+      {/* Icon */}
+      <div className={`inline-flex items-center justify-center w-12 h-12 ${bgColors[color]} rounded-lg mb-6`}>
+        <Icon className={`h-6 w-6 ${textColors[color]}`} />
       </div>
 
-      <motion.a 
-        href="#get-involved" 
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className={`block w-full text-center ${bgColors[color]} text-white px-6 py-3 rounded-lg font-bold transition shadow-md hover:shadow-lg`}
-      >
-        {cta}
-      </motion.a>
-    </motion.div>
+      {/* Content */}
+      <div className="flex-1 space-y-4">
+        <div>
+          <h4 className="text-2xl font-bold text-gray-900 mb-2">{title}</h4>
+          <p className={`text-lg font-semibold ${textColors[color]} mb-4`}>{subtitle}</p>
+          <p className="text-gray-600 leading-relaxed">{description}</p>
+        </div>
+
+        {/* Benefits */}
+        <div className="space-y-3">
+          <h5 className="font-semibold text-gray-900">What you get:</h5>
+          <ul className="space-y-2">
+            {benefits.map((benefit, index) => (
+              <li key={index} className="flex items-start gap-3 text-gray-600">
+                <div className={`w-1.5 h-1.5 ${bgColors[color]} rounded-full mt-2 flex-shrink-0`}></div>
+                <span className="text-sm leading-relaxed">{benefit}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* CTA Button */}
+      <div className="mt-8">
+        <Link 
+          to="/apply"
+          className={`inline-flex items-center justify-center w-full ${buttonColors[color]} text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-sm hover:shadow-md`}
+        >
+          {cta}
+          <ArrowRight className="h-4 w-4 ml-2" />
+        </Link>
+      </div>
+    </div>
   );
-} 
+}

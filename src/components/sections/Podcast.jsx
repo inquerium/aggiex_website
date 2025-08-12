@@ -1,10 +1,51 @@
-import { Headphones, Play, ArrowRight, Mic } from "lucide-react";
+import { Headphones, Play, ArrowRight, Mic, Mail } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Podcast() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState("");
+
+  const handleNewsletterSubscribe = async (e) => {
+    e.preventDefault();
+    setIsSubscribing(true);
+    setSubscriptionStatus("");
+    
+    try {
+      // Send verification email for podcast/newsletter signup
+      const response = await fetch('/api/email/send-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          firstName: firstName.trim(),
+          source: 'podcast'
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubscriptionStatus("success");
+        setEmail("");
+        setFirstName("");
+      } else {
+        setSubscriptionStatus("error");
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      setSubscriptionStatus("error");
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -27,7 +68,7 @@ export default function Podcast() {
   };
 
   return (
-    <section id="podcast" className="w-full py-16 md:py-20 bg-gray-900 relative overflow-hidden">
+    <section id="podcast" className="mobile-podcast w-full py-16 md:py-20 bg-gray-900 relative overflow-hidden">
       {/* Subtle background elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-64 h-64 bg-maroon-400 rounded-full blur-3xl"></div>
@@ -111,10 +152,54 @@ export default function Podcast() {
                 </div>
               </div>
               
-              <div className="text-center pt-4">
-                <div className="inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-sm hover:shadow-md">
-                  Get Notified When We Launch
-                  <ArrowRight className="h-5 w-5" />
+              <div className="text-center pt-4 space-y-6">
+                
+                {/* Newsletter Subscription Form */}
+                <div className="bg-white/10 rounded-xl p-6 border border-white/20">
+                  <h4 className="text-lg font-semibold text-white mb-4">Get Podcast & Newsletter Updates</h4>
+                  <form onSubmit={handleNewsletterSubscribe} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        placeholder="First Name (Optional)"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-white/50 focus:border-transparent transition-colors"
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email Address *"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-white/50 focus:border-transparent transition-colors"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubscribing}
+                      className="w-full inline-flex items-center justify-center gap-2 bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubscribing ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
+                          Subscribing...
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="h-4 w-4" />
+                          Subscribe to Updates
+                        </>
+                      )}
+                    </button>
+                    
+                    {subscriptionStatus === "success" && (
+                      <p className="text-green-300 text-sm">Check your email to verify your subscription! We'll send you updates about our podcast and newsletter.</p>
+                    )}
+                    {subscriptionStatus === "error" && (
+                      <p className="text-red-300 text-sm">Something went wrong. Please try again.</p>
+                    )}
+                  </form>
                 </div>
               </div>
             </div>

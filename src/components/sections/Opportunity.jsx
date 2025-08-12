@@ -28,7 +28,7 @@ export default function Opportunity() {
   };
 
   return (
-    <section id="opportunity" className="w-full py-16 md:py-20 bg-white relative">
+    <section id="opportunity" className="mobile-opportunity mobile-section w-full py-16 md:py-20 bg-white relative">
       <motion.div 
         ref={containerRef}
         variants={containerVariants}
@@ -38,7 +38,7 @@ export default function Opportunity() {
       >
         {/* Choose Your Role Section */}
         <motion.div variants={itemVariants} className="max-w-6xl mx-auto">
-          <div className="text-center space-y-8 mb-16">
+          <div className="mobile-section-header text-center space-y-8 mb-16">
             {/* Badge */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -51,15 +51,15 @@ export default function Opportunity() {
             </motion.div>
             
             <div className="space-y-6">
-              <h3 className="text-4xl md:text-5xl font-bold text-gray-900">Choose Your Role in the Revolution</h3>
+              <h3 className="mobile-section-title text-4xl md:text-5xl font-bold text-gray-900">Choose Your Role in the Revolution</h3>
             </div>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+            <p className="mobile-section-subtitle text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
                 AggieX represents a unique opportunity to be part of Texas A&M's transformation into a startup powerhouse. 
-                <span className="text-maroon-600 font-semibold">Our non-profit model creates a win-win: founders retain full ownership while investors benefit from tax-advantaged opportunities.</span>
+                <span className="text-maroon-600 font-semibold"> Our non-profit model creates a win-win: founders retain full ownership while investors benefit from tax-advantaged opportunities.</span>
               </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="mobile-opportunity-cards grid lg:grid-cols-3 gap-8">
             {[
               {
                 title: "Students",

@@ -233,7 +233,7 @@ export default function Community() {
           </div>
           
           {/* Learn More Button */}
-          <div className="text-center mt-12">
+          {/*<div className="text-center mt-12">
             <Link 
               to="/about"
               className="inline-flex items-center gap-3 border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-maroon-600 hover:text-maroon-600 transition-colors duration-200"
@@ -241,7 +241,7 @@ export default function Community() {
               Learn More About Our Team
               <ArrowRight className="h-5 w-5" />
             </Link>
-          </div>
+          </div>*/}
         </motion.div>
 
         {/* CTA Section */}

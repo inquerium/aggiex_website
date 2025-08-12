@@ -12,7 +12,6 @@ const applicationSteps = [
     desc: "Submit your application for the inaugural AggieX cohort - applications are open NOW!",
     bullets: [
       "Complete online application form",
-      "Submit pitch deck and business plan",
       "Team background and experience",
       "Market opportunity and traction",
     ],
@@ -26,7 +25,7 @@ const applicationSteps = [
     title: "Interview",
     desc: "Meet with our selection committee for in-depth discussions about your venture.",
     bullets: [
-      "Pitch presentation to committee",
+      "Pitch presentation & business model to committee",
       "Q&A session with mentors",
       "Team dynamics assessment",
       "Market validation review",
@@ -94,7 +93,7 @@ export default function Programs() {
   };
 
   return (
-    <section id="process" className="w-full py-16 md:py-20 bg-gray-50 relative">
+    <section id="process" className="mobile-process w-full py-16 md:py-20 bg-gray-50 relative">
       <motion.div
         ref={containerRef}
         variants={containerVariants}
@@ -150,12 +149,12 @@ export default function Programs() {
 
         <motion.div variants={itemVariants} className="max-w-6xl mx-auto">
           {/* Application Steps Tabs */}
-          <div className="flex justify-center gap-4 mb-8 flex-wrap">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
             {applicationSteps.map((step) => (
               <button
                 key={step.key}
                 onClick={() => setActive(step.key)}
-                className={`px-6 py-3 rounded-lg font-semibold border transition-colors duration-200 text-base ${
+                className={`px-4 py-3 rounded-lg font-semibold border transition-colors duration-200 text-sm md:text-base w-full ${
                   active === step.key 
                     ? step.key === "apply" 
                       ? "bg-green-600 text-white border-green-600 shadow-sm" 
@@ -169,13 +168,13 @@ export default function Programs() {
           </div>
           
           {/* Application Step Content */}
-          <div className="bg-white rounded-2xl p-12 shadow-sm border border-gray-200">
-            <div className="grid gap-12 lg:grid-cols-2 items-center">
+          <div className="bg-white rounded-2xl p-6 md:p-12 shadow-sm border border-gray-200">
+            <div className="grid gap-8 lg:gap-12 lg:grid-cols-2 items-start">
               <div className="space-y-6">
                 <div>
                   {current.icon}
-                  <h3 className="text-3xl font-bold text-gray-900 mb-4">{current.title}</h3>
-                  <p className="text-xl text-gray-600 leading-relaxed">{current.desc}</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{current.title}</h3>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">{current.desc}</p>
                 </div>
                 
                 <div className="space-y-4">
@@ -184,7 +183,7 @@ export default function Programs() {
                     {current.bullets.map((bullet, i) => (
                       <li key={i} className="flex items-start gap-3 text-gray-600">
                         <div className="w-1.5 h-1.5 bg-maroon-600 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="leading-relaxed">{bullet}</span>
+                        <span className="leading-relaxed text-sm md:text-base">{bullet}</span>
                       </li>
                     ))}
                   </ul>
@@ -193,7 +192,7 @@ export default function Programs() {
                 <div className="pt-4">
                   <Link 
                     to="/apply"
-                    className={`inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 shadow-sm hover:shadow-md ${
+                    className={`inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-colors duration-200 shadow-sm hover:shadow-md text-sm md:text-base ${
                       current.key === "apply" 
                         ? "bg-green-600 text-white hover:bg-green-700" 
                         : "bg-maroon-600 text-white hover:bg-maroon-700"
@@ -206,24 +205,24 @@ export default function Programs() {
               </div>
               
               {/* Timeline Element */}
-              <div className="relative">
-                <div className="bg-gradient-to-br from-maroon-50 to-maroon-100 rounded-xl p-8 border border-maroon-200">
-                  <div className="text-center space-y-4">
-                    <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto ${
+              <div className="relative order-first lg:order-last">
+                <div className="bg-gradient-to-br from-maroon-50 to-maroon-100 rounded-xl p-6 md:p-8 border border-maroon-200">
+                  <div className="text-center space-y-3 md:space-y-4">
+                    <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto ${
                       current.key === "apply" ? "bg-green-600" : "bg-maroon-600"
                     }`}>
-                      <Calendar className="h-8 w-8 text-white" />
+                      <Calendar className="h-6 w-6 md:h-8 md:w-8 text-white" />
                     </div>
-                    <h4 className="text-xl font-semibold text-maroon-800">Timeline</h4>
-                    <p className="text-maroon-700 font-medium">{current.timeline}</p>
+                    <h4 className="text-lg md:text-xl font-semibold text-maroon-800">Timeline</h4>
+                    <p className="text-maroon-700 font-medium text-sm md:text-base">{current.timeline}</p>
                     {current.urgency && (
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs md:text-sm font-medium ${
                         current.key === "apply" ? "text-green-700" : "text-maroon-600"
                       }`}>
                         {current.urgency}
                       </div>
                     )}
-                    <div className="text-sm text-maroon-600">
+                    <div className="text-xs md:text-sm text-maroon-600">
                       Step {applicationSteps.findIndex(s => s.key === active) + 1} of 4
                     </div>
                   </div>

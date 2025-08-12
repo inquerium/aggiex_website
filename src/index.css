@@ -1,3 +1,6 @@
+/* Import mobile-only styles */
+@import './mobile-only.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -33,7 +33,9 @@ export default function ApplicationForm() {
     email: "",
     affiliation: "",
     role: "",
-    message: ""
+    message: "",
+    newsletterSubscribed: true,
+    podcastNotifications: true
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,6 +53,7 @@ export default function ApplicationForm() {
     setIsSubmitting(true);
     
     try {
+      // Submit application
       const response = await fetch('/api/apply', {
         method: 'POST',
         headers: {
@@ -62,6 +65,24 @@ export default function ApplicationForm() {
       const result = await response.json();
 
       if (response.ok) {
+        // Send verification email for accelerator application
+        try {
+          await fetch('/api/email/send-verification', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              firstName: formData.firstName,
+              source: 'application'
+            }),
+          });
+        } catch (emailError) {
+          console.error('Verification email failed:', emailError);
+          // Don't fail the application if email fails
+        }
+
         alert(result.message || "Application submitted successfully! We'll be in touch soon.");
         // Reset form
         setFormData({
@@ -70,7 +91,9 @@ export default function ApplicationForm() {
           email: "",
           affiliation: "",
           role: "",
-          message: ""
+          message: "",
+          newsletterSubscribed: true,
+          podcastNotifications: true
         });
       } else {
         alert(result.error || "Failed to submit application. Please try again.");
@@ -267,6 +290,60 @@ export default function ApplicationForm() {
                   <p className="text-sm text-gray-500 mt-1">
                     Share your story, startup idea, or what excites you about joining the first AggieX cohort.
                   </p>
+                </div>
+              </div>
+
+              {/* Newsletter Preferences */}
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                  <Mail className="h-6 w-6 text-maroon-600" />
+                  Stay Connected
+                </h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      id="newsletterSubscribed"
+                      name="newsletterSubscribed"
+                      checked={formData.newsletterSubscribed}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        newsletterSubscribed: e.target.checked
+                      }))}
+                      className="mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500"
+                    />
+                    <div>
+                      <label htmlFor="newsletterSubscribed" className="block text-sm font-semibold text-gray-700">
+                        Subscribe to AggieX Newsletter
+                      </label>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Get weekly insights on startup news, founder spotlights, and exclusive AggieX updates.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      id="podcastNotifications"
+                      name="podcastNotifications"
+                      checked={formData.podcastNotifications}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        podcastNotifications: e.target.checked
+                      }))}
+                      className="mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500"
+                    />
+                    <div>
+                      <label htmlFor="podcastNotifications" className="block text-sm font-semibold text-gray-700">
+                        Get Podcast Launch Notifications
+                      </label>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Be the first to know when the AggieX Podcast launches with founder interviews and startup insights.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 

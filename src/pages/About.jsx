@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Users, Quote, Star, Award, Building2, ArrowRight } from "lucide-react";
@@ -79,9 +77,7 @@ export default function About() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1 pt-20">
+    <main className="flex-1 pt-20">
         <motion.div
           ref={containerRef}
           variants={containerVariants}
@@ -247,7 +243,5 @@ export default function About() {
           </motion.div>
         </motion.div>
       </main>
-      <Footer />
-    </div>
   );
 } 

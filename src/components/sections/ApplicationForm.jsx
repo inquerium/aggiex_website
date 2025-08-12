@@ -134,7 +134,7 @@ export default function ApplicationForm() {
               Apply to the <span className="text-maroon-600">First AggieX Cohort</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Be part of history as we launch Texas A&M's first university-sponsored accelerator. 
+              Be part of history as we launch Texas A&M's Premier accelerator. 
               This is your chance to build the next billion-dollar startup with the full support of the Aggie network.
             </p>
           </div>

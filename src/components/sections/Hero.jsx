@@ -85,7 +85,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex items-center justify-center"
         >
-          <div className="relative w-full max-w-lg md:h-[480px] rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+          <div className="relative w-full max-w-lg rounded-2xl overflow-hidden shadow-xl border border-gray-200">
             <img
               src={AggieLandImg}
               alt="Aggieland campus"

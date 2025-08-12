@@ -451,6 +451,16 @@ app.get('/api/email/verify/:token', async (req, res) => {
       return res.status(400).json({ error: 'Verification token has expired' });
     }
 
+    // Check if already verified
+    if (contact.emailVerified) {
+      return res.json({ 
+        success: true, 
+        message: 'Email already verified',
+        email: contact.email,
+        source: contact.source
+      });
+    }
+
     // Verify the email
     await prisma.contact.update({
       where: { id: contact.id },
@@ -488,14 +498,20 @@ app.get('/api/email/verify/:token', async (req, res) => {
       console.log('⚠️ Welcome email failed but continuing:', welcomeError.message);
     }
 
-    // Redirect to frontend verification page
-    const frontendUrl = process.env.CORS_ORIGIN || 'http://localhost:5175';
-            res.redirect(`${frontendUrl}/verify/${token}?status=success&email=${encodeURIComponent(contact.email)}&source=${contact.source}`);
+    // Return JSON response instead of redirect
+    res.json({ 
+      success: true, 
+      message: 'Email verified successfully',
+      email: contact.email,
+      source: contact.source
+    });
 
   } catch (error) {
     console.error('💥 EMAIL VERIFICATION ERROR:', error);
-    const frontendUrl = process.env.CORS_ORIGIN || 'http://localhost:5175';
-            res.redirect(`${frontendUrl}/verify/${token}?status=error&message=${encodeURIComponent('Server error. Please try again later.')}`);
+    res.status(500).json({ 
+      error: 'Server error. Please try again later.',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 
@@ -1267,6 +1283,11 @@ if (process.env.NODE_ENV === 'production') {
   
   app.get('/apple-touch-icon-precomposed.png', (req, res) => {
     res.status(404).end(); // Return 404 for now
+  });
+  
+  // Direct verification endpoint for email links
+  app.get('/verify/:token', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
   });
   
   // SPA fallback for non-API routes

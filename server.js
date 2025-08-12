@@ -658,7 +658,7 @@ function getPodcastWelcomeEmail(firstName, verificationToken) {
           
           <h3 style="color: #8B0000;">Coming Soon</h3>
           <ul style="color: #555; line-height: 1.6;">
-            <li><strong>AggieX Podcast:</strong> Weekly episodes with founder interviews</li>
+            <li><strong>AggieX Podcast:</strong> Consistent episodes with powerful figures in entreprenuerial community</li>
             <li><strong>Newsletter:</strong> Startup insights and community updates</li>
             <li><strong>Exclusive Events:</strong> Early access to AggieX events</li>
             <li><strong>Community Access:</strong> Connect with fellow Aggie entrepreneurs</li>
@@ -743,7 +743,7 @@ function getAcceleratorConfirmedEmail(firstName) {
             <li><strong>Application Review:</strong> Our team will review your initial application</li>
             <li><strong>Additional Information:</strong> We may request your pitch deck or more details</li>
             <li><strong>Interview Invitation:</strong> Selected candidates will be invited for interviews</li>
-            <li><strong>Final Selection:</strong> Cohort announcement in January 2025</li>
+            <li><strong>Final Selection:</strong> Teams can be selected NOW for our initial cohort! Big Cohort announcement in January 2026</li>
           </ol>
           
           <p style="font-size: 16px; line-height: 1.6; color: #333;">
@@ -778,7 +778,7 @@ Next Steps:
 1. Application Review: Our team will review your initial application
 2. Additional Information: We may request your pitch deck or more details
 3. Interview Invitation: Selected candidates will be invited for interviews
-4. Final Selection: Cohort announcement in January 2025
+4. Final Selection: Rolling Cohort selections for this semester. Official Cohort announcement January 2026
 
 We'll be in touch within the next few days with more information about your application status.
 
@@ -855,7 +855,7 @@ Excellent! Your email has been verified. You're now officially part of the Aggie
 - You're part of the AggieX community
 
 What's Coming:
-- Weekly Newsletter: Startup insights and community updates
+- Newsletter: Startup insights and community updates
 - Podcast Launch: Be the first to know when we go live
 - Founder Interviews: Real stories from Aggie entrepreneurs
 - Exclusive Content: Behind-the-scenes of AggieX

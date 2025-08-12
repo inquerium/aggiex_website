@@ -115,9 +115,9 @@ export default function Community() {
                   <div className="w-24 h-24 bg-maroon-600 rounded-full flex items-center justify-center mx-auto">
                     <Network className="h-12 w-12 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-maroon-800">The First Large Aggie-Founder Network</h3>
+                  <h3 className="text-2xl font-bold text-maroon-800">The First Large Aggie-Startup Network</h3>
                   <p className="text-maroon-700 leading-relaxed">
-                    Join the inaugural community of Aggie entrepreneurs building the future together.
+                    Join the inaugural community of Aggie entrepreneurs determined in bringing unicorns to Aggieland.
                   </p>
                 </div>
               </div>
@@ -145,12 +145,12 @@ export default function Community() {
               
               <div className="space-y-6">
                 <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Be Part of the <span className="text-maroon-600">First Large Aggie-Founder Network</span>
+                  Be Part of the <span className="text-maroon-600">First Large Aggie-Startup Network</span>
                 </h3>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  This isn't just another startup community—it's the first time Aggie entrepreneurs will have a unified network 
-                  of founders, investors, and mentors. 
-                  <span className="text-maroon-600 font-semibold">Our non-profit structure ensures every dollar and every connection goes directly to building successful companies.</span>
+                  This isn't just another startup community—it's the first time Aggie entrepreneurs can utilize a unified network 
+                  of founders, investors, and mentors to accelerate. 
+                  <span className="text-maroon-600 font-semibold"> Our non-profit structure ensures every dollar and every connection goes directly to building successful companies. </span>
                   You'll be part of the foundation that builds the next generation of billion-dollar Aggie companies.
                 </p>
                 
@@ -248,9 +248,9 @@ export default function Community() {
         <motion.div variants={itemVariants} className="text-center">
           <div className="bg-white rounded-2xl p-12 shadow-sm border border-gray-200 max-w-4xl mx-auto">
             <div className="space-y-8">
-              <div className="text-2xl font-bold text-gray-900">Ready to Join the First Aggie-Founder Network?</div>
+              <div className="text-2xl font-bold text-gray-900">Ready to Join AggieX?</div>
               <p className="text-gray-600 text-xl max-w-2xl mx-auto leading-relaxed">
-                Every day we wait is another day Stanford and MIT get further ahead. 
+                Every day we wait is another day other universities get further ahead. 
                 Every day we wait is another Aggie who leaves for Boston or Austin.
               </p>
               

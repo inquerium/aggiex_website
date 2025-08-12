@@ -102,7 +102,7 @@ export default function Podcast() {
             </h2>
             <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
               Weekly conversations with founders, investors, and ecosystem builders. 
-              This isn't just a podcast—it's the voice of the AggieX revolution.
+              This isn't just a podcast, it's the voice of the AggieX revolution.
             </p>
           </div>
         </motion.div>
@@ -118,7 +118,7 @@ export default function Podcast() {
               </div>
               
               <div className="text-center space-y-6">
-                <h3 className="text-3xl font-bold">The Voice of Aggie Innovation</h3>
+                <h3 className="text-3xl font-bold">The Voice of Aggie Startup Community</h3>
                 <p className="text-maroon-100 text-lg max-w-2xl mx-auto leading-relaxed">
                   We're building something special. The AggieX Podcast will feature conversations with the people 
                   who are actually building the future of Aggie entrepreneurship. From student founders to successful 
@@ -131,7 +131,7 @@ export default function Podcast() {
                   <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto">
                     <Play className="h-6 w-6 text-white" />
                   </div>
-                  <h4 className="font-semibold">Weekly Episodes</h4>
+                  <h4 className="font-semibold">Consistent Episodes</h4>
                   <p className="text-maroon-100 text-sm">Fresh content every week with the latest insights and stories</p>
                 </div>
                 

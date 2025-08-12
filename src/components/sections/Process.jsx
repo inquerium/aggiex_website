@@ -16,7 +16,7 @@ const applicationSteps = [
       "Market opportunity and traction",
     ],
     cta: "Apply Now",
-    timeline: "NOW - December 2024",
+    timeline: "NOW - December 2025",
     urgency: "Limited spots available"
   },
   {
@@ -31,7 +31,7 @@ const applicationSteps = [
       "Market validation review",
     ],
     cta: "Prepare for Interview",
-    timeline: "December 2024 - January 2025",
+    timeline: "September 2025 - December 2025",
     urgency: "Rolling interviews"
   },
   {
@@ -46,7 +46,7 @@ const applicationSteps = [
       "Cohort announcement",
     ],
     cta: "View Selection Criteria",
-    timeline: "January 2025",
+    timeline: "NOW - December 2025",
     urgency: "Final decisions"
   },
   {
@@ -61,7 +61,7 @@ const applicationSteps = [
       "Demo day with investor showcase",
     ],
     cta: "Learn About Program",
-    timeline: "February - May 2025",
+    timeline: "August 2025",
     urgency: "Program begins"
   },
 ];
@@ -115,7 +115,7 @@ export default function Programs() {
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               <strong>AggieX is launching NOW!</strong> Be among the first to join Texas A&M's premier startup accelerator. 
-              Applications are open for our initial cohort, with our full-scale program launching Spring 2025.
+              Applications are open for our initial cohort, with our full-scale program launching Spring 2026.
             </p>
           </div>
         </motion.div>
@@ -236,7 +236,7 @@ export default function Programs() {
                       <div className="text-sm">
                         <p className="font-semibold text-green-800 mb-1">Initial Cohort Launch</p>
                         <p className="text-green-700">
-                          This is your chance to be part of our inaugural cohort! Our full-scale program with expanded capacity launches Spring 2025.
+                          This is your chance to be part of our inaugural cohort! Our full-scale program with expanded capacity launches Spring 2026.
                         </p>
                       </div>
                     </div>

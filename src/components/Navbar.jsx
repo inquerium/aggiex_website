@@ -49,10 +49,10 @@ export default function Navbar() {
                          {/* Mobile Menu Button */}
              <button
                onClick={toggleMenu}
-               className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+               className="lg:hidden p- rounded-lg hover:bg-gray-100 transition-colors"
                aria-label="Toggle menu"
              >
-               <div className="w-6 h-6 flex flex-col justify-center items-center">
+               <div className="w-6 h-6 flex flex-col justify-center items-center -mt-2">
                  <span className={`block w-5 h-0.5 bg-gray-800 transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'}`}></span>
                  <span className={`block w-5 h-0.5 bg-gray-800 transition-all duration-300 ${mobileOpen ? 'opacity-0' : 'opacity-100'}`}></span>
                  <span className={`block w-5 h-0.5 bg-gray-800 transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'}`}></span>

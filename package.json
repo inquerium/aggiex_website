@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "start": "node server.js",
+    "start:test": "NODE_ENV=testing PORT=3002 node server.js",
+    "test:email": "node test-email-verification.js",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

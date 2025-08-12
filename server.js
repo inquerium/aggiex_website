@@ -1278,11 +1278,15 @@ if (process.env.NODE_ENV === 'production') {
   
   // Handle favicon and apple touch icon requests
   app.get('/favicon.ico', (req, res) => {
-    res.status(404).end(); // Return 404 for now
+    res.sendFile(path.join(distPath, 'favicon.ico'));
   });
   
   app.get('/apple-touch-icon-precomposed.png', (req, res) => {
-    res.status(404).end(); // Return 404 for now
+    res.sendFile(path.join(distPath, 'aggiex-logo.png'));
+  });
+  
+  app.get('/aggiex-logo.png', (req, res) => {
+    res.sendFile(path.join(distPath, 'aggiex-logo.png'));
   });
   
   // Direct verification endpoint for email links

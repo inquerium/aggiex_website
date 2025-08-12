@@ -10,9 +10,7 @@ const BASE_URL = 'http://localhost:3002'; // Testing port
 // Test data - use timestamp to avoid conflicts
 const timestamp = Date.now();
 const testEmails = [
-  `test1_${timestamp}@example.com`,
-  `test2_${timestamp}@example.com`,
-  `test3_${timestamp}@example.com`
+  `zachnowroozi@gmail.com`,
 ];
 
 // Colors for console output

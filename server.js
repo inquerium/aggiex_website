@@ -16,6 +16,9 @@ dotenv.config();
 const prisma = new PrismaClient();
 const app = express();
 
+// Trust proxy for rate limiting behind load balancers (Render, etc.)
+app.set('trust proxy', 1);
+
 // Initialize SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -155,7 +158,31 @@ app.post('/api/apply', async (req, res) => {
       return res.status(409).json({ error: 'Application already submitted with this email' });
     }
 
-    // Save to database
+    // Create or update contact first (required for foreign key constraint)
+    console.log('💾 Creating/updating contact...');
+    const contact = await prisma.contact.upsert({
+      where: { email: email.trim().toLowerCase() },
+      update: {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        source: 'application',
+        newsletterSubscribed,
+        podcastNotifications,
+        lastEngagement: new Date()
+      },
+      create: {
+        email: email.trim().toLowerCase(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        source: 'application',
+        interests: [role, affiliation],
+        newsletterSubscribed,
+        podcastNotifications
+      }
+    });
+    console.log('✅ Contact record created/updated');
+
+    // Save application to database
     console.log('💾 Saving application to DB...');
     const newApplication = await prisma.application.create({
       data: {
@@ -169,33 +196,6 @@ app.post('/api/apply', async (req, res) => {
       },
     });
     console.log('✅ Application saved with ID:', newApplication.id);
-
-    // Create or update contact for newsletter
-    try {
-      await prisma.contact.upsert({
-        where: { email: email.trim().toLowerCase() },
-        update: {
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          source: 'application',
-          newsletterSubscribed,
-          podcastNotifications,
-          lastEngagement: new Date()
-        },
-        create: {
-          email: email.trim().toLowerCase(),
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          source: 'application',
-          interests: [role, affiliation],
-          newsletterSubscribed,
-          podcastNotifications
-        }
-      });
-      console.log('✅ Contact record created/updated');
-    } catch (contactError) {
-      console.log('⚠️ Contact creation failed but continuing:', contactError.message);
-    }
 
     // Send push notification (don't let it fail the request)
     try {
@@ -1259,6 +1259,16 @@ if (process.env.NODE_ENV === 'production') {
   const distPath = resolve(__dirname, 'dist');
   console.log('Serving static from:', distPath);
   app.use(express.static(distPath));
+  
+  // Handle favicon and apple touch icon requests
+  app.get('/favicon.ico', (req, res) => {
+    res.status(404).end(); // Return 404 for now
+  });
+  
+  app.get('/apple-touch-icon-precomposed.png', (req, res) => {
+    res.status(404).end(); // Return 404 for now
+  });
+  
   // SPA fallback for non-API routes
   app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));

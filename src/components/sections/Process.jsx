@@ -61,7 +61,7 @@ const applicationSteps = [
       "Demo day with investor showcase",
     ],
     cta: "Learn About Program",
-    timeline: "August 2025",
+    timeline: "August 2025 & January 2026",
     urgency: "Program begins"
   },
 ];

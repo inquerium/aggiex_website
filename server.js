@@ -110,12 +110,34 @@ app.post('/api/apply', async (req, res) => {
   console.log('🔥 === APPLICATION SUBMISSION ===');
   
   try {
-    const { firstName, lastName, email, affiliation, role, message, newsletterSubscribed = true, podcastNotifications = true } = req.body;
+    const { 
+      firstName, 
+      lastName, 
+      email, 
+      affiliation, 
+      role, 
+      message, 
+      newsletterSubscribed = true, 
+      podcastNotifications = true,
+      programs = { coalition: true, incubator: false, accelerator: false },
+      coalitionRole = "",
+      startupIdea = "",
+      experience = "",
+      leadershipExperience = "",
+      orgInvolvement = ""
+    } = req.body;
     
     // Input validation
     if (!firstName || !lastName || !email || !affiliation || !role) {
       console.log('❌ Missing required fields');
       return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Additional validation for mentors/advisors/investors
+    const isProfessional = ['alumni', 'faculty', 'researcher', 'partner', 'other'].includes(affiliation);
+    if (isProfessional && (!experience || !startupIdea)) {
+      console.log('❌ Missing professional information');
+      return res.status(400).json({ error: 'Please provide your professional background and how you would like to support AggieX' });
     }
 
     // Validate email format
@@ -137,6 +159,22 @@ app.post('/api/apply', async (req, res) => {
       return res.status(400).json({ error: 'Message too long' });
     }
 
+    if (startupIdea && startupIdea.length > 2000) {
+      return res.status(400).json({ error: 'Startup idea too long' });
+    }
+
+    if (experience && experience.length > 2000) {
+      return res.status(400).json({ error: 'Experience too long' });
+    }
+
+    if (leadershipExperience && leadershipExperience.length > 2000) {
+      return res.status(400).json({ error: 'Leadership experience too long' });
+    }
+
+    if (orgInvolvement && orgInvolvement.length > 2000) {
+      return res.status(400).json({ error: 'Organization involvement too long' });
+    }
+
     // Validate affiliation and role values
     const validAffiliations = ['current-student', 'alumni', 'faculty', 'researcher', 'partner', 'other'];
     const validRoles = ['founder', 'student-builder', 'alumni-mentor', 'advisor', 'investor', 'partner', 'other'];
@@ -149,13 +187,21 @@ app.post('/api/apply', async (req, res) => {
       return res.status(400).json({ error: 'Invalid role' });
     }
 
-    // Check for duplicate applications (same email)
+    // Check for duplicate applications (same email) - but allow coalition members to apply to programs
     const existingApplication = await prisma.application.findFirst({
       where: { email: email.trim().toLowerCase() }
     });
 
+    // Only block if they're applying to the same program type
     if (existingApplication) {
-      return res.status(409).json({ error: 'Application already submitted with this email' });
+      const existingPrograms = existingApplication.programs || {};
+      const newPrograms = programs || {};
+      
+      // Check if they're applying to the same specific program
+      if ((existingPrograms.incubator && newPrograms.incubator) || 
+          (existingPrograms.accelerator && newPrograms.accelerator)) {
+        return res.status(409).json({ error: 'Application already submitted for this program' });
+      }
     }
 
     // Create or update contact first (required for foreign key constraint)
@@ -175,7 +221,7 @@ app.post('/api/apply', async (req, res) => {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         source: 'application',
-        interests: [role, affiliation],
+        interests: [role, affiliation, ...Object.keys(programs || {}).filter(key => programs[key])],
         newsletterSubscribed,
         podcastNotifications
       }
@@ -192,7 +238,13 @@ app.post('/api/apply', async (req, res) => {
         affiliation,
         role,
         message: message ? message.trim() : null,
-        status: 'pending'
+        status: 'pending',
+        programs: programs || { coalition: true, incubator: false, accelerator: false },
+        coalitionRole: coalitionRole ? coalitionRole.trim() : null,
+        startupIdea: startupIdea ? startupIdea.trim() : null,
+        experience: experience ? experience.trim() : null,
+        leadershipExperience: leadershipExperience ? leadershipExperience.trim() : null,
+        orgInvolvement: orgInvolvement ? orgInvolvement.trim() : null
       },
     });
     console.log('✅ Application saved with ID:', newApplication.id);
@@ -201,8 +253,11 @@ app.post('/api/apply', async (req, res) => {
     try {
       if (process.env.PUSHOVER_USER_KEY && process.env.PUSHOVER_APP_TOKEN) {
         console.log('📱 Sending push notification...');
+        const programTypes = Object.keys(programs || {}).filter(key => programs[key]);
+        const programText = programTypes.length > 0 ? programTypes.join(', ') : 'coalition';
+        
         pushover.send({
-          message: `New AggieX application from ${firstName} ${lastName} (${email}) - ${role}`,
+          message: `New AggieX application from ${firstName} ${lastName} (${email}) - ${role} - Programs: ${programText}`,
           title: "🚀 AggieX Application",
           priority: 1
         });

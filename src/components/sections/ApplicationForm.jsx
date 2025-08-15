@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { FileText, Mail, User, Building2, ArrowRight, MessageSquare, Users } from "lucide-react";
+import { FileText, Mail, User, Building2, ArrowRight, MessageSquare } from "lucide-react";
 
 export default function ApplicationForm() {
   const containerRef = useRef(null);
@@ -36,7 +36,11 @@ export default function ApplicationForm() {
     message: "",
     newsletterSubscribed: true,
     podcastNotifications: true,
-    programs: { coalition: true, incubator: false, accelerator: false },
+    programs: {
+      coalition: true, // Default to coalition membership
+      incubator: false,
+      accelerator: false
+    },
     coalitionRole: "",
     startupIdea: "",
     experience: "",
@@ -59,16 +63,19 @@ export default function ApplicationForm() {
       const newPrograms = { ...prev.programs };
       
       if (program === 'coalition') {
-        newPrograms.coalition = !newPrograms.coalition;
+        // Coalition can always be toggled
+        newPrograms[program] = !newPrograms[program];
       } else if (program === 'incubator') {
+        // If selecting incubator, unselect accelerator
         newPrograms.incubator = !newPrograms.incubator;
         if (newPrograms.incubator) {
-          newPrograms.accelerator = false; // Can't select both
+          newPrograms.accelerator = false;
         }
       } else if (program === 'accelerator') {
+        // If selecting accelerator, unselect incubator
         newPrograms.accelerator = !newPrograms.accelerator;
         if (newPrograms.accelerator) {
-          newPrograms.incubator = false; // Can't select both
+          newPrograms.incubator = false;
         }
       }
       
@@ -114,7 +121,22 @@ export default function ApplicationForm() {
           // Don't fail the application if email fails
         }
 
-        alert(result.message || "Application submitted successfully! We'll be in touch soon.");
+        const successMessage = result.message || "Application submitted successfully! Welcome to the AggieX community.";
+        
+        if (formData.programs.incubator) {
+          const shouldRedirect = window.confirm(
+            `${successMessage}\n\nYou selected the Aggies Create Incubator. Would you like to continue to their application form now?`
+          );
+          
+          if (shouldRedirect) {
+            window.open(
+              'https://docs.google.com/forms/d/e/1FAIpQLSdFQnMRvOZY0W_RKauzM5sO89bRJfyAKF8Ki3uRHuWwsyPaEw/viewform?usp=header',
+              '_blank'
+            );
+          }
+        } else {
+          alert(successMessage + " We'll be in touch soon.");
+        }
         // Reset form
         setFormData({
           firstName: "",
@@ -125,7 +147,11 @@ export default function ApplicationForm() {
           message: "",
           newsletterSubscribed: true,
           podcastNotifications: true,
-          programs: { coalition: true, incubator: false, accelerator: false },
+          programs: {
+            coalition: true,
+            incubator: false,
+            accelerator: false
+          },
           coalitionRole: "",
           startupIdea: "",
           experience: "",
@@ -163,16 +189,16 @@ export default function ApplicationForm() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-maroon-50 text-maroon-700 px-4 py-2 rounded-full text-sm font-medium border border-maroon-100">
             <FileText className="h-4 w-4" />
-            First Cohort Application
+            Join the AggieX Ecosystem
           </div>
           
           <div className="space-y-6">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
-              Apply to the <span className="text-maroon-600">First AggieX Cohort</span>
+              Join the <span className="text-maroon-600">AggieX Coalition</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Be part of history as we launch Texas A&M's Premier accelerator. 
-              This is your chance to build the next billion-dollar startup with the full support of the Aggie network.
+              Be part of Texas A&M's unified startup ecosystem! Whether you want to join as a general member, 
+              apply to our programs, or contribute as a mentor, there's a place for you in the AggieX community.
             </p>
           </div>
         </motion.div>
@@ -240,67 +266,6 @@ export default function ApplicationForm() {
                     />
                   </div>
                   <p className="text-sm text-gray-500 mt-1">We'll use this for the newsletter and application updates</p>
-                </div>
-              </div>
-
-              {/* Texas A&M Affiliation */}
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                  <Building2 className="h-6 w-6 text-maroon-600" />
-                  Texas A&M Affiliation
-                </h3>
-                
-                <div>
-                  <label htmlFor="affiliation" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your Affiliation with Texas A&M *
-                  </label>
-                  <select
-                    id="affiliation"
-                    name="affiliation"
-                    value={formData.affiliation}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
-                  >
-                    <option value="">Select your affiliation</option>
-                    <option value="current-student">Current Student</option>
-                    <option value="alumni">Alumni</option>
-                    <option value="faculty">Faculty/Staff</option>
-                    <option value="researcher">Researcher</option>
-                    <option value="partner">Strategic Partner</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Role in Accelerator */}
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                  <User className="h-6 w-6 text-maroon-600" />
-                  Your Role
-                </h3>
-                
-                <div>
-                  <label htmlFor="role" className="block text-sm font-semibold text-gray-700 mb-2">
-                    What role will you serve? *
-                  </label>
-                  <select
-                    id="role"
-                    name="role"
-                    value={formData.role}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
-                  >
-                    <option value="">Select your role</option>
-                    <option value="founder">Founder/Co-Founder</option>
-                    <option value="student-builder">Student Builder</option>
-                    <option value="alumni-mentor">Alumni Mentor</option>
-                    <option value="advisor">Advisor</option>
-                    <option value="investor">Investor</option>
-                    <option value="partner">Strategic Partner</option>
-                    <option value="other">Other</option>
-                  </select>
                 </div>
               </div>
 
@@ -447,32 +412,68 @@ export default function ApplicationForm() {
                 </div>
               )}
 
+              {/* Texas A&M Affiliation */}
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                  <Building2 className="h-6 w-6 text-maroon-600" />
+                  Texas A&M Affiliation
+                </h3>
+                
+                <div>
+                  <label htmlFor="affiliation" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Your Affiliation with Texas A&M *
+                  </label>
+                  <select
+                    id="affiliation"
+                    name="affiliation"
+                    value={formData.affiliation}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
+                  >
+                    <option value="">Select your affiliation</option>
+                    <option value="current-student">Current Student</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="faculty">Faculty/Staff</option>
+                    <option value="researcher">Researcher</option>
+                    <option value="partner">Strategic Partner</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
               {/* Coalition-Specific Questions - Only for students */}
               {formData.programs.coalition && formData.affiliation === 'current-student' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                    <Users className="h-6 w-6 text-maroon-600" />
-                    Coalition Information
+                    <User className="h-6 w-6 text-maroon-600" />
+                    Coalition Membership
                   </h3>
                   
                   <div>
                     <label htmlFor="coalitionRole" className="block text-sm font-semibold text-gray-700 mb-2">
-                      What interests you about the coalition? (Optional)
+                      What interests you most about the coalition?
                     </label>
-                    <textarea
+                    <select
                       id="coalitionRole"
                       name="coalitionRole"
                       value={formData.coalitionRole}
                       onChange={handleInputChange}
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="What aspects of the coalition interest you? How would you like to contribute?"
-                    />
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
+                    >
+                      <option value="">Select your interest</option>
+                      <option value="events">Attending events and networking</option>
+                      <option value="mentorship">Finding mentorship opportunities</option>
+                      <option value="startup-ideas">Developing startup ideas</option>
+                      <option value="community">Being part of the community</option>
+                      <option value="leadership">Taking on leadership roles</option>
+                      <option value="other">Other</option>
+                    </select>
                   </div>
 
                   <div>
                     <label htmlFor="orgInvolvement" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Student organization involvement (Optional)
+                      Are you involved in any student organizations? (Optional)
                     </label>
                     <textarea
                       id="orgInvolvement"
@@ -481,8 +482,52 @@ export default function ApplicationForm() {
                       onChange={handleInputChange}
                       rows={3}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="Are you involved in any student organizations? Which ones and what roles?"
+                      placeholder="Tell us about any student organizations, clubs, or groups you're involved with..."
                     />
+                  </div>
+
+                  <div>
+                    <label htmlFor="leadershipExperience" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Any leadership experience? (Optional)
+                    </label>
+                    <textarea
+                      id="leadershipExperience"
+                      name="leadershipExperience"
+                      value={formData.leadershipExperience}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Share any leadership roles, project management, or team coordination experience..."
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Incubator Application Notice */}
+              {formData.programs.incubator && (
+                <div className="space-y-6">
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div className="flex items-start gap-3">
+                      <div className="text-2xl">📝</div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                          Aggies Create Incubator Application
+                        </h3>
+                        <p className="text-blue-800 mb-4">
+                          Aggies Create has their own comprehensive application form. After submitting this coalition application, 
+                          you'll be redirected to their official application form to complete the incubator application process.
+                        </p>
+                        <div className="text-sm text-blue-700">
+                          <strong>What to expect:</strong>
+                          <ul className="mt-2 space-y-1">
+                            <li>• Complete this form to join the AggieX coalition</li>
+                            <li>• You'll be redirected to Aggies Create's application form</li>
+                            <li>• Their form includes detailed questions about your startup idea and team</li>
+                            <li>• Both applications will be reviewed by their respective teams</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -522,21 +567,6 @@ export default function ApplicationForm() {
                       rows={3}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
                       placeholder="Share any technical skills, business experience, or relevant background..."
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="leadershipExperience" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Leadership experience (Optional)
-                    </label>
-                    <textarea
-                      id="leadershipExperience"
-                      name="leadershipExperience"
-                      value={formData.leadershipExperience}
-                      onChange={handleInputChange}
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="Any leadership roles, team management, or project leadership experience..."
                     />
                   </div>
                 </div>
@@ -583,6 +613,37 @@ export default function ApplicationForm() {
                   </div>
                 </div>
               )}
+
+              {/* Role in Accelerator */}
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                  <User className="h-6 w-6 text-maroon-600" />
+                  Your Role
+                </h3>
+                
+                <div>
+                  <label htmlFor="role" className="block text-sm font-semibold text-gray-700 mb-2">
+                    What role will you serve? *
+                  </label>
+                  <select
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
+                  >
+                    <option value="">Select your role</option>
+                    <option value="founder">Founder/Co-Founder</option>
+                    <option value="student-builder">Student Builder</option>
+                    <option value="alumni-mentor">Alumni Mentor</option>
+                    <option value="advisor">Advisor</option>
+                    <option value="investor">Investor</option>
+                    <option value="partner">Strategic Partner</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
 
               {/* Message Section */}
               <div className="space-y-6">
@@ -678,7 +739,7 @@ export default function ApplicationForm() {
                     </>
                   ) : (
                     <>
-                      Submit Application
+                      Join AggieX
                       <ArrowRight className="h-5 w-5" />
                     </>
                   )}
@@ -687,7 +748,7 @@ export default function ApplicationForm() {
 
               <div className="text-center">
                 <p className="text-sm text-gray-500">
-                  By submitting this application, you agree to receive updates about AggieX and the accelerator program.
+                  By submitting this application, you agree to receive updates about AggieX and join our community.
                 </p>
               </div>
             </form>

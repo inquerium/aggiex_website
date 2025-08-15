@@ -25,6 +25,15 @@ model Application {
   role        String   // founder, student-builder, alumni-mentor, advisor, investor, partner, other
   message     String?  @db.Text // optional additional information
   status      String   @default("pending") // pending, approved, rejected, waitlisted
+  
+  // New coalition and program fields
+  programs    Json?    // { coalition: boolean, incubator: boolean, accelerator: boolean }
+  coalitionRole String? // What interests them about the coalition
+  startupIdea String?  @db.Text // Startup idea description
+  experience  String?  @db.Text // Relevant experience or skills
+  leadershipExperience String? @db.Text // Leadership experience
+  orgInvolvement String? @db.Text // Student organization involvement
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -90,4 +99,49 @@ model NewsletterRecipient {
   clickedAt  DateTime?
 
   @@map("newsletter_recipients")
+}
+
+model Organization {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  description     String   @db.Text
+  logoUrl         String?
+  websiteUrl      String?
+  meetingSchedule String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  leaders         OrganizationLeader[]
+
+  @@map("organizations")
+}
+
+model OrganizationLeader {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  name           String
+  email          String?
+  role           String?
+  isPrimary      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("organization_leaders")
+}
+
+model PartnershipRequest {
+  id              String   @id @default(cuid())
+  organizationName String
+  contactName     String
+  contactEmail    String
+  description     String   @db.Text
+  goals           String   @db.Text
+  status          String   @default("pending") // "pending", "approved", "rejected"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("partnership_requests")
 }

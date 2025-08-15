@@ -192,16 +192,24 @@ app.post('/api/apply', async (req, res) => {
       where: { email: email.trim().toLowerCase() }
     });
 
-    // Only block if they're applying to the same program type
-    if (existingApplication) {
+    // Special exception for test email - allow unlimited submissions
+    const isTestEmail = email.trim().toLowerCase() === 'ruzi@tamu.edu';
+    
+    if (existingApplication && !isTestEmail) {
       const existingPrograms = existingApplication.programs || {};
       const newPrograms = programs || {};
       
       // Check if they're applying to the same specific program
       if ((existingPrograms.incubator && newPrograms.incubator) || 
           (existingPrograms.accelerator && newPrograms.accelerator)) {
-        return res.status(409).json({ error: 'Application already submitted for this program' });
+        return res.status(409).json({ 
+          error: 'You have already submitted an application for this program. Please contact us if you need to update your application.',
+          type: 'duplicate_program'
+        });
       }
+      
+      // If they're applying to a different program, allow it but warn them
+      console.log('⚠️ User applying to different program with existing email:', email);
     }
 
     // Create or update contact first (required for foreign key constraint)
@@ -276,6 +284,15 @@ app.post('/api/apply', async (req, res) => {
 
   } catch (error) {
     console.error('💥 APPLICATION ERROR:', error);
+    
+    // Handle specific database constraint errors
+    if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+      return res.status(409).json({
+        error: 'An application with this email address already exists. Please use a different email or contact us if you need to update your existing application.',
+        type: 'duplicate_email'
+      });
+    }
+    
     res.status(500).json({
       error: 'Server error. Please try again later.',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined

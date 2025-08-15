@@ -159,7 +159,14 @@ export default function ApplicationForm() {
           orgInvolvement: ""
         });
       } else {
-        alert(result.error || "Failed to submit application. Please try again.");
+        // Handle specific error types with better user messages
+        if (result.type === 'duplicate_email') {
+          alert("⚠️ Email Already Used\n\nAn application with this email address already exists. Please use a different email address or contact us if you need to update your existing application.\n\nContact: team@aggiex.org");
+        } else if (result.type === 'duplicate_program') {
+          alert("⚠️ Program Already Applied\n\nYou have already submitted an application for this program. Please contact us if you need to update your application.\n\nContact: team@aggiex.org");
+        } else {
+          alert(result.error || "Failed to submit application. Please try again.");
+        }
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -248,25 +255,28 @@ export default function ApplicationForm() {
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
-                      placeholder="your.email@tamu.edu"
-                    />
+                                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Email Address *
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors"
+                        placeholder="your.email@tamu.edu"
+                      />
+                    </div>
+                    <p className="text-sm text-gray-500 mt-1">We'll use this for the newsletter and application updates</p>
+                    {formData.email === 'ruzi@tamu.edu' && (
+                      <p className="text-sm text-blue-600 mt-1 font-medium">🧪 Test mode: Unlimited submissions allowed</p>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">We'll use this for the newsletter and application updates</p>
-                </div>
               </div>
 
               {/* Program Selection - Only show for students */}

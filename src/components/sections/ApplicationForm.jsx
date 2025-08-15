@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { FileText, Mail, User, Building2, ArrowRight, MessageSquare } from "lucide-react";
+import { FileText, Mail, User, Building2, ArrowRight, MessageSquare, Users } from "lucide-react";
 
 export default function ApplicationForm() {
   const containerRef = useRef(null);
@@ -35,7 +35,13 @@ export default function ApplicationForm() {
     role: "",
     message: "",
     newsletterSubscribed: true,
-    podcastNotifications: true
+    podcastNotifications: true,
+    programs: { coalition: true, incubator: false, accelerator: false },
+    coalitionRole: "",
+    startupIdea: "",
+    experience: "",
+    leadershipExperience: "",
+    orgInvolvement: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,6 +52,31 @@ export default function ApplicationForm() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleProgramChange = (program) => {
+    setFormData(prev => {
+      const newPrograms = { ...prev.programs };
+      
+      if (program === 'coalition') {
+        newPrograms.coalition = !newPrograms.coalition;
+      } else if (program === 'incubator') {
+        newPrograms.incubator = !newPrograms.incubator;
+        if (newPrograms.incubator) {
+          newPrograms.accelerator = false; // Can't select both
+        }
+      } else if (program === 'accelerator') {
+        newPrograms.accelerator = !newPrograms.accelerator;
+        if (newPrograms.accelerator) {
+          newPrograms.incubator = false; // Can't select both
+        }
+      }
+      
+      return {
+        ...prev,
+        programs: newPrograms
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -93,7 +124,13 @@ export default function ApplicationForm() {
           role: "",
           message: "",
           newsletterSubscribed: true,
-          podcastNotifications: true
+          podcastNotifications: true,
+          programs: { coalition: true, incubator: false, accelerator: false },
+          coalitionRole: "",
+          startupIdea: "",
+          experience: "",
+          leadershipExperience: "",
+          orgInvolvement: ""
         });
       } else {
         alert(result.error || "Failed to submit application. Please try again.");
@@ -266,6 +303,286 @@ export default function ApplicationForm() {
                   </select>
                 </div>
               </div>
+
+              {/* Program Selection - Only show for students */}
+              {formData.affiliation === 'current-student' && (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <FileText className="h-6 w-6 text-maroon-600" />
+                    What Would You Like to Join?
+                  </h3>
+                  
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="text-yellow-600 text-lg">💡</div>
+                      <div className="text-sm text-yellow-800">
+                        <strong>Note:</strong> You can join the coalition and apply to one program (Incubator OR Accelerator). 
+                        The Incubator is for early-stage ideas, while the Accelerator is for validated startups ready to scale.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="coalition"
+                        checked={formData.programs.coalition}
+                        onChange={() => handleProgramChange('coalition')}
+                        className="mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500"
+                      />
+                      <div>
+                        <label htmlFor="coalition" className="block text-sm font-semibold text-gray-700">
+                          🎯 AggieX Coalition (General Member)
+                        </label>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Join as a general member to stay connected, attend events, and be part of the community. 
+                          <strong className="text-maroon-600"> We want everyone to be part of the coalition!</strong>
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className={`flex items-start gap-3 ${formData.programs.accelerator ? 'opacity-50' : ''}`}>
+                      <input
+                        type="checkbox"
+                        id="incubator"
+                        checked={formData.programs.incubator}
+                        onChange={() => handleProgramChange('incubator')}
+                        disabled={formData.programs.accelerator}
+                        className={`mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500 ${
+                          formData.programs.accelerator ? 'cursor-not-allowed opacity-50' : ''
+                        }`}
+                      />
+                      <div>
+                        <label htmlFor="incubator" className={`block text-sm font-semibold ${
+                          formData.programs.accelerator ? 'text-gray-500' : 'text-gray-700'
+                        }`}>
+                          🌱 Aggies Create Incubator (Fall 2025)
+                        </label>
+                        <p className={`text-sm mt-1 ${
+                          formData.programs.accelerator ? 'text-gray-400' : 'text-gray-600'
+                        }`}>
+                          12-week program to form teams, build MVPs, and launch your startup idea.
+                          <span className="text-maroon-600 font-medium"> You'll be redirected to their application form.</span>
+                          {formData.programs.accelerator && (
+                            <span className="block text-red-600 text-xs mt-1">
+                              ⚠️ Please deselect Accelerator first
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className={`flex items-start gap-3 ${formData.programs.incubator ? 'opacity-50' : ''}`}>
+                      <input
+                        type="checkbox"
+                        id="accelerator"
+                        checked={formData.programs.accelerator}
+                        onChange={() => handleProgramChange('accelerator')}
+                        disabled={formData.programs.incubator}
+                        className={`mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500 ${
+                          formData.programs.incubator ? 'cursor-not-allowed opacity-50' : ''
+                        }`}
+                      />
+                      <div>
+                        <label htmlFor="accelerator" className={`block text-sm font-semibold ${
+                          formData.programs.incubator ? 'text-gray-500' : 'text-gray-700'
+                        }`}>
+                          🚀 AggieX Accelerator (Spring 2026)
+                        </label>
+                        <p className={`text-sm mt-1 ${
+                          formData.programs.incubator ? 'text-gray-400' : 'text-gray-600'
+                        }`}>
+                          Intensive growth program for validated startups ready to scale and raise funding.
+                          {formData.programs.incubator && (
+                            <span className="block text-red-600 text-xs mt-1">
+                              ⚠️ Please deselect Incubator first
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Accelerator Only - For alumni, mentors, advisors, investors */}
+              {(formData.affiliation === 'alumni' || formData.affiliation === 'faculty' || formData.affiliation === 'researcher' || formData.affiliation === 'partner' || formData.affiliation === 'other') && (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <FileText className="h-6 w-6 text-maroon-600" />
+                    Accelerator Program
+                  </h3>
+                  
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="text-blue-600 text-lg">💼</div>
+                      <div className="text-sm text-blue-800">
+                        <strong>Alumni, Mentors, Advisors & Investors:</strong> You can apply to support the AggieX Accelerator program 
+                        as a mentor, advisor, or investor. This program is open to all professionals who want to help 
+                        Aggie entrepreneurs succeed.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="accelerator"
+                        checked={formData.programs.accelerator}
+                        onChange={() => handleProgramChange('accelerator')}
+                        className="mt-1 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500"
+                      />
+                      <div>
+                        <label htmlFor="accelerator" className="block text-sm font-semibold text-gray-700">
+                          🚀 AggieX Accelerator (Spring 2026)
+                        </label>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Support validated startups as a mentor, advisor, or investor in our intensive growth program.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Coalition-Specific Questions - Only for students */}
+              {formData.programs.coalition && formData.affiliation === 'current-student' && (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <Users className="h-6 w-6 text-maroon-600" />
+                    Coalition Information
+                  </h3>
+                  
+                  <div>
+                    <label htmlFor="coalitionRole" className="block text-sm font-semibold text-gray-700 mb-2">
+                      What interests you about the coalition? (Optional)
+                    </label>
+                    <textarea
+                      id="coalitionRole"
+                      name="coalitionRole"
+                      value={formData.coalitionRole}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="What aspects of the coalition interest you? How would you like to contribute?"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="orgInvolvement" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Student organization involvement (Optional)
+                    </label>
+                    <textarea
+                      id="orgInvolvement"
+                      name="orgInvolvement"
+                      value={formData.orgInvolvement}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Are you involved in any student organizations? Which ones and what roles?"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Program-Specific Questions - Only for students */}
+              {formData.programs.accelerator && formData.affiliation === 'current-student' && (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <Building2 className="h-6 w-6 text-maroon-600" />
+                    Program-Specific Information
+                  </h3>
+                  
+                  <div>
+                    <label htmlFor="startupIdea" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Do you have a startup idea? (Optional)
+                    </label>
+                    <textarea
+                      id="startupIdea"
+                      name="startupIdea"
+                      value={formData.startupIdea}
+                      onChange={handleInputChange}
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Describe your startup idea, problem you're solving, or what you want to build..."
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="experience" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Relevant experience or skills (Optional)
+                    </label>
+                    <textarea
+                      id="experience"
+                      name="experience"
+                      value={formData.experience}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Share any technical skills, business experience, or relevant background..."
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="leadershipExperience" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Leadership experience (Optional)
+                    </label>
+                    <textarea
+                      id="leadershipExperience"
+                      name="leadershipExperience"
+                      value={formData.leadershipExperience}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Any leadership roles, team management, or project leadership experience..."
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Mentor/Advisor/Investor Information */}
+              {(formData.affiliation === 'alumni' || formData.affiliation === 'faculty' || formData.affiliation === 'researcher' || formData.affiliation === 'partner' || formData.affiliation === 'other') && (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <User className="h-6 w-6 text-maroon-600" />
+                    Professional Information
+                  </h3>
+                  
+                  <div>
+                    <label htmlFor="experience" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Professional background and expertise (Required)
+                    </label>
+                    <textarea
+                      id="experience"
+                      name="experience"
+                      value={formData.experience}
+                      onChange={handleInputChange}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Describe your professional background, industry experience, areas of expertise, and how you can help Aggie entrepreneurs..."
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="startupIdea" className="block text-sm font-semibold text-gray-700 mb-2">
+                      How would you like to support AggieX? (Required)
+                    </label>
+                    <textarea
+                      id="startupIdea"
+                      name="startupIdea"
+                      value={formData.startupIdea}
+                      onChange={handleInputChange}
+                      required
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-colors resize-none"
+                      placeholder="Mentoring, advising, investing, speaking, or other ways you'd like to contribute..."
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Message Section */}
               <div className="space-y-6">
